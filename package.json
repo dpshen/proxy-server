@@ -1,0 +1,15 @@
+{
+  "name": "yt-proxy",
+  "version": "0.0.1",
+  "description": "proxy for debug",
+  "main": "yt-proxy.js",
+  "author": "dapeng",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "express": "^4.13.4",
+    "http-proxy": "^1.13.2",
+    "http-proxy-simple": "^0.9.5",
+    "socket.io": "^1.4.5"
+  }
+}

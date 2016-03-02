@@ -1,0 +1,26 @@
+var os = require('os');
+var IPv4, hostName;
+
+if (os.platform() == 'darwin') {
+    en0 = os.networkInterfaces().en0
+} else if (os.platform() == 'linux') {
+    en0 = os.networkInterfaces().eth0
+}
+
+try {
+    for (var i = 0; i < en0.length; i++) {
+        if (en0[i].family == 'IPv4') {
+            IPv4 = en0[i].address;
+        }
+    }
+} catch (e) {
+    IPv4 = '127.0.0.1';
+}
+
+module.exports = {
+    ip: IPv4,
+    host: os.hostname(),
+    proxy_port: 9000,
+    socket_port: 9001,
+    static_port: 9002
+};
