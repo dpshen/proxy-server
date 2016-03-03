@@ -1,4 +1,4 @@
-require('./app/socket');
+require('./app/server/socket');
 
 var config = require("./config");
 var http = require('http');
@@ -11,4 +11,4 @@ http.createServer(app).listen(config.static_port, function () {
     console.log('webUI服务   ' + (config.ip + ':' + config.static_port).green);
 });
 
-exports = require('./app/proxy');
+exports = require('./app/proxy/proxy');
