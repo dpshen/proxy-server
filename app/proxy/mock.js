@@ -5,12 +5,15 @@ var dbAddr = require('../../config').dbAddr;
 
 mongoose.connect(dbAddr);
 
-exports.needMock = function(cid,url){
-    console.log(cid, url);
+exports.needMock = function (ip, url) {
+    console.log(ip, url);
+    //return true;
     return false;
 };
 
-exports.mockReq = function(performRequest,remoteRequest){
-    performRequest(remoteRequest);
+exports.mockReq = function (ip, url, response) {
+    //response.write();
+    console.log(ip, url);
+    response.end("mock data!");
 };
 

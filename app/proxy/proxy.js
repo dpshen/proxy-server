@@ -69,10 +69,11 @@ proxy.on("http-error", function (cid, error, request, response) {
 proxy.on("http-intercept-request", function (cid, request, response, remoteRequest, performRequest) {
     // console.log("proxy: " + cid + ": HTTP intercept request");
     console.log(("Proxy: "+ cid +' '+ request.url).green);
-    //console.log(remoteRequest.headers);
-    //console.log(remoteRequest.body);
-    if (mock.needMock(cid,request.url)){
-        mock.mockReq(performRequest,remoteRequest)
+    console.log(request.connection.remoteAddress);
+    var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || request.connection.socket.remoteAddress;
+    if (mock.needMock(ip,request.url)){
+        console.log('mock');
+        mock.mockReq(ip,request.url,response);
     } else {
         performRequest(remoteRequest);
     }
@@ -87,9 +88,7 @@ proxy.on("http-intercept-response", function (cid, request, response, remoteResp
     //if (proxyFileType(request.url)) {
     //    printXHR(request, remoteResponse, remoteResponseBody);
     //}
-    //performResponse(remoteResponse, remoteResponseBody);
-    performResponse(remoteResponse, body);
-    console.log(body.toString());
+    performResponse(remoteResponse, remoteResponseBody);
 });
 
 
