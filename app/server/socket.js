@@ -1,10 +1,12 @@
 var io = require('socket.io')();
-var config = require('../../config');
+var colors = require("colors");
+var config = require('../config');
 
 io.on('connection', function(socket){
     console.log("connect:"+socket.request.headers.host);
     socket.on('proxy', function(data){
-        //console.log(data);
+        console.log(data.url);
+        console.log('websocket:',data.res);
         //console.log(socket.remoteAddress);
     });
     socket.on('disconnect', function(){

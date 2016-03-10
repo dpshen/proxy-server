@@ -3,7 +3,7 @@
 var colors = require("colors");
 var proxy = require("http-proxy-simple");
 var fs = require("fs");
-var config = require("../../config");
+var config = require("../config");
 var fileNameIndex = 0;
 var fileType = process.argv.slice(2, process.argv.length);
 
@@ -42,7 +42,7 @@ proxy = proxy.createProxyServer({
 });
 
 
-console.log("Print fileType ==>" + (fileType.join(" ").green))
+//console.log("Print fileType ==>" + (fileType.join(" ").green))
 
 console.log("Please set the proxy ==> " + (IP + ":" + PORT).green);
 
@@ -69,22 +69,20 @@ proxy.on("http-error", function (cid, error, request, response) {
 proxy.on("http-intercept-request", function (cid, request, response, remoteRequest, performRequest) {
     // console.log("proxy: " + cid + ": HTTP intercept request");
     console.log(("Proxy: "+ cid +' '+ request.url).green);
-    console.log(request.connection.remoteAddress);
     var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || request.connection.socket.remoteAddress;
-    if (mock.needMock(ip,request.url)){
-        console.log('mock');
-        mock.mockReq(ip,request.url,response);
-    } else {
-        performRequest(remoteRequest);
-    }
+    mock.needMock(ip,request.url,function (flag){
+        if(flag){
+            mock.mockReq(ip,request.url,response,remoteRequest,performRequest);
+        } else {
+            performRequest(remoteRequest);
+        }
+    });
 });
 
 proxy.on("http-intercept-response", function (cid, request, response, remoteResponse, remoteResponseBody, performResponse) {
 
     wsClient.emit(request, remoteResponse, remoteResponseBody);
-    console.log('intercept-response '+cid);
-    console.log(remoteResponseBody.toString());
-    var body = new Buffer("hello word!");
+    //var body = new Buffer("hello word!");
     //if (proxyFileType(request.url)) {
     //    printXHR(request, remoteResponse, remoteResponseBody);
     //}

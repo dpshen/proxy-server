@@ -27,5 +27,5 @@ module.exports = {
     proxy_port: 9000,
     socket_port: 9001,
     static_port: 9002,
-    dbAddr: 'mongodb://localhost/trace'
+    dbAddr: 'mongodb://localhost/proxy'
 };

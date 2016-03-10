@@ -1,4 +1,4 @@
-var config = require("../../config");
+var config = require("../config");
 var serverUrl = "http://" + config.ip + ':' + config.socket_port;
 var Client = require("socket.io-client");
 var socket = new Client(serverUrl);
