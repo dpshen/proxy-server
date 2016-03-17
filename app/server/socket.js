@@ -1,11 +1,13 @@
-var io = require('socket.io')();
-var colors = require("colors");
+var WebSocketServer = require('ws').Server;
 var config = require('../config');
+var ws = new WebSocketServer({ port: config.socket_port});
+var colors = require("colors");
 
-io.on('connection', function(socket){
+ws.on('connection', function(socket){
     console.log("connect:"+socket.request.headers.host);
     socket.on('proxy', function(data){
-        socket.emit('message',data);
+        ws.broadcast(data);
+        //socket.emit('message',data);
         console.log(data.url);
         //console.log('websocket:',data.res);
         //console.log(socket.remoteAddress);
@@ -14,11 +16,11 @@ io.on('connection', function(socket){
         //console.log("disconnect:"+socket.request.host);
     });
 });
-io.listen(config.socket_port, function(err, data){
-    if (err) {
-        console.log(err)
-    }
-    console.log(data)
-});
+
+ws.broadcast = function broadcast(data) {
+    ws.clients.forEach(function each(client) {
+        client.send(data);
+    });
+};
 
 //module.exports = io;

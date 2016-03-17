@@ -1,16 +1,18 @@
 var config = require("../config");
-var serverUrl = "http://" + config.ip + ':' + config.socket_port;
-var Client = require("socket.io-client");
-var socket = new Client(serverUrl);
+var serverUrl = "ws://" + config.ip + ':' + config.socket_port;
+var WebSocket = require('ws');
+//var Client = require("socket.io-client");
+//var socket = new Client(serverUrl);
+var ws = new WebSocket(serverUrl);
 
 var mock = require('./mock');
 
 
-function reConnect(socket) {
-    console.log("reConnect WebSocket");
-    socket.disconnect();
-    return (new Client(serverUrl));
-}
+//function reConnect(ws) {
+//    console.log("reConnect WebSocket");
+//    ws.disconnect();
+//    return (new Client(serverUrl));
+//}
 
 /*
 向webSocket服务端发送截获的http请求数据
@@ -26,10 +28,12 @@ module.exports.emit = function(request, response, body) {
         body: body
     };
     try {
-        socket.emit("proxy", dataSet);
+        //socket.emit("proxy", dataSet);
+        ws.send(dataSet)
+
     } catch (e) {
-        //socket = reConnect(socket);
-        socket.emit("err", {msg: "proxy server emit failed", err: e, url: request.url});
+        //ws = reConnect(ws);
+        //socket.emit("err", {msg: "proxy server emit failed", err: e, url: request.url});
         console.log("proxy err: " + e);
     }
 
