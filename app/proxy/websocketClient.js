@@ -5,6 +5,10 @@ var WebSocket = require('ws');
 //var socket = new Client(serverUrl);
 var ws = new WebSocket(serverUrl);
 
+ws.on('open', function open() {
+    console.log('connect');
+});
+
 var mock = require('./mock');
 
 
@@ -29,7 +33,7 @@ module.exports.emit = function(request, response, body) {
     };
     try {
         //socket.emit("proxy", dataSet);
-        ws.send(dataSet)
+        ws.send(JSON.stringify(dataSet))
 
     } catch (e) {
         //ws = reConnect(ws);

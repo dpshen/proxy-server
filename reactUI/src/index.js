@@ -4,58 +4,60 @@ import { render } from 'react-dom';
 import Websocket  from 'react-websocket';
 import { socketServer } from '../config'
 
-//class Meun extends Component {
-//    render () {
-//        return (
-//            <div>
-//                <h1 className="middle">这是index页面</h1>
-//                <h2 className="blue">这是入口index加载的list</h2>
-//                <List />
-//            </div>
-//        );
-//    }
-//}
 
-class UrlList extends Component {
+var UrlList = React.createClass({
+
+
+    click: function (index) {
+        console.log(index);
+    },
+
+
     render() {
         return (
             <table>
                 <tbody>
-                {this.props.list.map((row,index) =>{ return <tr key={index}><td>{row.url}</td></tr>;}) }
+                {this.props.list.map((row, index) => {
+                    return <tr key={index} onClick={this.click.bind(this,index)}>
+                        <td> {row.url}</td>
+                    </tr>;
+                }) }
                 </tbody>
             </table>
         )
     }
-}
+});
 
-class ShowAll extends Component {
+var ShowAll = React.createClass({
 
-    constructor(props) {
-        super(props);
-        this.state = {list: [{url:'qweqweqwe'},{url:'asdzdasda'}]};
-    }
+    getInitialState(){
+        return {
+            list: []
+        }
+    },
 
     handleData(data) {
+        var list = this.state.list;
+        list.push(data);
         this.setState({
-            list: list.push(data)
+            list: list
         });
-        console.log(list);
-    }
+        //console.log(list);
+    },
 
     render() {
         //
         //var rows = [];
         console.log('rows');
-        var debug = true;
+        var debug = false;
         return (
             <div>
-                <p>123123123</p>
                 <Websocket url={socketServer} onMessage={this.handleData} debug={debug}/>
-                <UrlList list={this.state.list} />
+                <UrlList list={this.state.list}/>
             </div>
         )
     }
-}
+});
 
 render(<ShowAll />, document.getElementById('body'));
 //render(<Meun />, document.getElementById('list'));

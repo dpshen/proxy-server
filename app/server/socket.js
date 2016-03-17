@@ -4,11 +4,12 @@ var ws = new WebSocketServer({ port: config.socket_port});
 var colors = require("colors");
 
 ws.on('connection', function(socket){
-    console.log("connect:"+socket.request.headers.host);
-    socket.on('proxy', function(data){
+    //console.log("connect:"+socket.request.headers.host);
+    //console.log(socket);
+    socket.on('message', function(data){
         ws.broadcast(data);
         //socket.emit('message',data);
-        console.log(data.url);
+        console.log(JSON.parse(data).url);
         //console.log('websocket:',data.res);
         //console.log(socket.remoteAddress);
     });
