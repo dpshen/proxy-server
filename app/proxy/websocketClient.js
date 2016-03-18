@@ -18,10 +18,30 @@ var mock = require('./mock');
 //    return (new Client(serverUrl));
 //}
 
+function getBodyStr(body) {
+    if (body.type != 'Buffer'){
+        console.log('not buffer',body.type);
+        return body.data
+    } else {
+        var data = body.data;
+        if ( data.isEncoding('utg-8') ) {
+            data = data.toString()
+        } else if (data.isEncoding('ascii')){
+            data = data.toString('ascii')
+        } else if (data.isEncoding('gbk')){
+            data = data.toString('gbk')
+        }
+        return data
+    }
+}
+
 /*
 向webSocket服务端发送截获的http请求数据
  */
 module.exports.emit = function(request, response, body) {
+
+    //body = getBodyStr(body);
+
     var dataSet = {
         url: request.url,
         status: response.statusCode,
