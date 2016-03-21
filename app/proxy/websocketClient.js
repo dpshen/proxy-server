@@ -38,7 +38,7 @@ function getBodyStr(body) {
 /*
 向webSocket服务端发送截获的http请求数据
  */
-module.exports.emit = function(request, response, body) {
+module.exports.emit = function(request, response, body, cid) {
 
     //body = getBodyStr(body);
 
@@ -46,7 +46,7 @@ module.exports.emit = function(request, response, body) {
         url: request.url,
         status: response.statusCode,
         method: request.method,
-        address: request.address,
+        address: cid,
         req: request.headers,
         res: response.headers,
         body: body

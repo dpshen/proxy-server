@@ -81,7 +81,7 @@ proxy.on("http-intercept-request", function (cid, request, response, remoteReque
 
 proxy.on("http-intercept-response", function (cid, request, response, remoteResponse, remoteResponseBody, performResponse) {
 
-    wsClient.emit(request, remoteResponse, remoteResponseBody);
+    wsClient.emit(request, remoteResponse, remoteResponseBody, cid);
     //var body = new Buffer("hello word!");
     //if (proxyFileType(request.url)) {
     //    printXHR(request, remoteResponse, remoteResponseBody);

@@ -1,37 +1,43 @@
-//import '../css/bootstrap/css/bootstrap.css'
 import React from 'react';
 import Websocket  from 'react-websocket';
 import { socketServer } from '../../config'
+import { Table } from 'react-bootstrap'
 
-import UrlList from 'UrlList'
+//import UrlTable from './UrlTable'
 
 
 var ReqList = React.createClass({
 
-    getInitialState(){
-        return {
-            list: []
-        }
-    },
 
-    handleData(data) {
-        var list = this.state.list;
-        list.push(data);
+    click: function (index) {
+        console.log(index);
         this.setState({
-            list: list
-        });
-        //console.log(list);
+            showOne: this.props.list[index]
+        })
     },
 
     render() {
-        //
-        //var rows = [];
-        var debug = false;
+        var tdStyle = {
+            cursor: 'pointer',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+        };
         return (
-            <div>
-                <Websocket url={socketServer} onMessage={this.handleData} debug={debug}/>
-                <UrlList list={this.state.list}/>
-            </div>
+            <Table striped bordered condensed hover>
+                <thead>
+                <tr>
+                    <th>URL</th>
+                </tr>
+                </thead>
+                <tbody>
+                {this.props.list.map((row, index) => {
+                    return <tr key={index} onClick={this.props.clickEvent.bind(this,index)}>
+                        <td style={tdStyle}>{row.url}</td>
+                    </tr>;
+                }) }
+                </tbody>
+            </Table>
         )
     }
 });
