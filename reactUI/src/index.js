@@ -1,4 +1,5 @@
 import './css/bootstrap/css/bootstrap.css'
+import './css/index.css.less'
 
 import React, { Component } from 'react';
 import Websocket  from 'react-websocket';
@@ -14,7 +15,10 @@ var Container = React.createClass({
     getInitialState(){
         return {
             list: [],
-            detail:{
+            windowHeight: {
+                height: window.innerHeight - 30
+            },
+            detail: {
                 url: '',
                 status: '',
                 method: '',
@@ -42,15 +46,32 @@ var Container = React.createClass({
         console.log(index);
     },
 
+    handleResize: function (e) {
+        this.setState(
+            {
+                windowHeight: {
+                    height: window.innerHeight - 30
+                }
+            });
+    },
+
+    componentDidMount: function () {
+        window.addEventListener('onresize', this.handleResize);
+    },
+
+    componentWillUnmount: function () {
+        window.removeEventListener('onresize', this.handleResize);
+    },
+
     render() {
         var debug = false;
         return (
             <div className="container-fluid">
-                <div className="row-fluid">
-                    <div className="col-md-6">
-                        <ReqList list={this.state.list} clickEvent={this.showDetail} />
+                <div>
+                    <div className="left-list" style={this.state.windowHeight}>
+                        <ReqList list={this.state.list} clickEvent={this.showDetail}/>
                     </div>
-                    <div className="col-md-6">
+                    <div className="right-detail" style={this.state.windowHeight}>
                         <ReqDetail detail={this.state.detail}/>
                     </div>
                 </div>

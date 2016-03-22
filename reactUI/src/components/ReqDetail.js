@@ -1,17 +1,54 @@
-//import '../css/bootstrap/css/bootstrap.css'
 import React from 'react';
 
 var ReqDetail = React.createClass({
 
+    expandHeader(header){
+        let jsxHeaders = [];
+        var Cookies = [];
+        var cookieList;
+        for (let key in header) {
+            if (key == "cookie") {
+                cookieList = header[key].split(';');
+            } else if (key == "set-cookie") {
+                cookieList = header[key];
+            }
+
+            if (key == "cookie" || key == "set-cookie"){
+                cookieList.map(function (item) {
+                    Cookies.push(<div className="cookie">{item + ';'}</div>)
+                });
+                jsxHeaders.push(<div><b>{key}: </b>{Cookies}</div>);
+            } else {
+                jsxHeaders.push(<div><b>{key}:</b>{header[key]}</div>)
+            }
+        }
+        return jsxHeaders;
+    },
     render() {
-        console.log(this.props.detail.address);
-        console.log(this.props.detail.req);
+        var detail = this.props.detail;
+
+        var req = this.expandHeader(detail.req);
+        var res = this.expandHeader(detail.res);
+
+        if (this.props.detail.url == ''){
+            return (<div></div>)
+        }
         return (
             <div>
-                <div>
-                    <p>{this.props.detail.url}</p>
-                    <p>{this.props.detail.method} {this.props.detail.status}</p>
-                    <p>{this.props.detail.address}</p>
+                <h4>General</h4>
+                <div className="box">
+                    <b>Request URL: </b> {detail.url}<br/>
+                    <b>Request Method: </b> {detail.method}<br/>
+                    <b>Status Code: </b> {detail.status}<br/>
+                    <b>Remote Address: </b> {detail.address}<br/>
+                </div>
+                <h4>Request Header</h4>
+                <div className="box">
+                        {req}
+                </div>
+                <h4>Response Header</h4>
+                <div className="box">
+                        {res}
                 </div>
             </div>
         )
@@ -20,4 +57,3 @@ var ReqDetail = React.createClass({
 
 exports['default'] = ReqDetail;
 module.exports = exports['default'];
-//render(<Meun />, document.getElementById('list'));
