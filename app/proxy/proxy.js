@@ -17,9 +17,9 @@ fileType = fileType.length ? fileType : [".html"];
 
 
 //代理所使用的端口号
-const PORT = config.proxy_port;
+var PORT = config.proxy_port;
 //本机ip
-const IP = config.ip;
+var IP = config.ip;
 
 
 function proxyFileType(url) {
