@@ -67,8 +67,7 @@ proxy.on("http-error", function (cid, error, request, response) {
 });
 
 proxy.on("http-intercept-request", function (cid, request, response, remoteRequest, performRequest) {
-    // console.log("proxy: " + cid + ": HTTP intercept request");
-    console.log(("Proxy: "+ cid +' '+ request.url).green);
+    //console.log(("Proxy: "+ cid +' '+ request.url).green);
     var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || request.connection.socket.remoteAddress;
     mock.needMock(ip,request.url,function (flag){
         if(flag){
@@ -82,43 +81,10 @@ proxy.on("http-intercept-request", function (cid, request, response, remoteReque
 proxy.on("http-intercept-response", function (cid, request, response, remoteResponse, remoteResponseBody, performResponse) {
 
     wsClient.emit(request, remoteResponse, remoteResponseBody, cid);
-    //var body = new Buffer("hello word!");
-    //if (proxyFileType(request.url)) {
-    //    printXHR(request, remoteResponse, remoteResponseBody);
-    //}
+
     performResponse(remoteResponse, remoteResponseBody);
 });
 
-
-//function reConnect(socket) {
-//    console.log("reConnect WebSocket");
-//    socket.disconnect();
-//    return (new Client(serverUrl));
-//}
-
-//function emit(request, response, body) {
-//    var dataSet = {
-//        url: request.url,
-//        status: response.statusCode,
-//        method: request.method,
-//        address: request.address,
-//        req: request.headers,
-//        res: response.headers,
-//        body: body
-//    };
-//    try {
-//
-//        //console.log('emit proxy');
-//        socket.emit("proxy", dataSet);
-//    } catch (e) {
-//        //socket = reConnect(socket);
-//        socket.emit("err", {msg: "proxy server emit failed", err: e, url: request.url});
-//        //console.log("resend :" + dataSet);
-//        //socket.emit("proxy", dataSet);
-//        console.log("proxy err: " + e);
-//    }
-//
-//}
 
 function printXHR(request, response, remoteResponseBody) {
 

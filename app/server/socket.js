@@ -1,20 +1,14 @@
 var WebSocketServer = require('ws').Server;
 var config = require('../config');
 var ws = new WebSocketServer({ port: config.socket_port});
-var colors = require("colors");
 
 ws.on('connection', function(socket){
-    //console.log("connect:"+socket.request.headers.host);
-    //console.log(socket);
+    console.log(socket._socket.remoteAddress);
     socket.on('message', function(data){
         ws.broadcast(data);
-        //socket.emit('message',data);
-        console.log(JSON.parse(data).url);
-        //console.log('websocket:',data.res);
-        //console.log(socket.remoteAddress);
     });
     socket.on('disconnect', function(){
-        //console.log("disconnect:"+socket.request.host);
+        console.log("disconnect:"+socket);
     });
 });
 

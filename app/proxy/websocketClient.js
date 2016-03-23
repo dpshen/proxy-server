@@ -46,7 +46,7 @@ module.exports.emit = function(request, response, body, cid) {
         url: request.url,
         status: response.statusCode,
         method: request.method,
-        address: cid,
+        address: cid.substring(0, cid.indexOf(':')),
         req: request.headers,
         res: response.headers,
         body: body
@@ -56,8 +56,6 @@ module.exports.emit = function(request, response, body, cid) {
         ws.send(JSON.stringify(dataSet))
 
     } catch (e) {
-        //ws = reConnect(ws);
-        //socket.emit("err", {msg: "proxy server emit failed", err: e, url: request.url});
         console.log("proxy err: " + e);
     }
 

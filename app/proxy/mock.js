@@ -23,15 +23,6 @@ function upsert(model) {
     });
 }
 
-//upsert(mockListModel,
-//    {ip: "192.168.31.187", url: "http://api.yuantutech.com/user-web/restapi/common/corp/corpHome"},
-//    {
-//        ip: "192.168.31.187",
-//        url: "http://api.yuantutech.com/user-web/restapi/common/corp/corpHome",
-//        switch: true,
-//        public: false,
-//        mockData: "jsonp1({ip:qw})"
-//    });
 
 // 判断请求是否需要mock
 exports.needMock = function (ip, url, callback) {

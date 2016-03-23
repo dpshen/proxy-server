@@ -33,8 +33,9 @@ var ReqDetail = React.createClass({
         if (this.props.detail.url == ''){
             return (<div></div>)
         }
+
         return (
-            <div>
+            <div >
                 <h4>General</h4>
                 <div className="box">
                     <b>Request URL: </b> {detail.url}<br/>
