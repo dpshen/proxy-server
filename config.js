@@ -5,7 +5,7 @@ IPv4 = function () {
     if (os.platform() == 'darwin') {
         en0 = os.networkInterfaces().en0
     } else if (os.platform() == 'linux') {
-        en0 = os.networkInterfaces().eth0
+        en0 = os.networkInterfaces().eth1 || os.networkInterfaces().eth0
     }
 
     try {
