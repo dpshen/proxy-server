@@ -28,8 +28,9 @@ var exportConfig = {
     socket_port: 9001,
     static_port: 9002,
     dbAddr: 'mongodb://localhost/proxy',
+    //socketServer: 'ws://127.0.0.1:9001'
     socketServer: 'ws://112.124.118.39:9001'
 };
 
-module.exports = exportConfig
+module.exports = exportConfig;
 
