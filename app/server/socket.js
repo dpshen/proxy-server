@@ -1,5 +1,5 @@
 var WebSocketServer = require('ws').Server;
-var config = require('../config');
+var config = require('../../config');
 var ws = new WebSocketServer({ port: config.socket_port});
 
 ws.on('connection', function(socket){

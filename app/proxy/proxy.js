@@ -3,7 +3,7 @@
 var colors = require("colors");
 var proxy = require("http-proxy-simple");
 //var fs = require("fs");
-var config = require("../config");
+var config = require("../../config");
 var fileNameIndex = 0;
 var fileType = process.argv.slice(2, process.argv.length);
 

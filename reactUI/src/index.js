@@ -4,7 +4,7 @@ import './css/index.css.less'
 import React, { Component } from 'react';
 import Websocket  from 'react-websocket';
 import { render } from 'react-dom';
-import { socketServer } from '../config'
+import { socketServer } from '../../config'
 import { Table } from 'react-bootstrap'
 
 import ReqList from './components/ReqList';

@@ -1,5 +1,5 @@
 var os = require('os');
-var IPv4, hostName;
+var IPv4;
 
 IPv4 = function () {
     if (os.platform() == 'darwin') {
@@ -21,11 +21,15 @@ IPv4 = function () {
 }();
 
 
-module.exports = {
+var exportConfig = {
     ip: IPv4,
     host: os.hostname(),
     proxy_port: 9000,
     socket_port: 9001,
     static_port: 9002,
-    dbAddr: 'mongodb://localhost/proxy'
+    dbAddr: 'mongodb://localhost/proxy',
+    socketServer: 'ws://112.124.118.39:9001'
 };
+
+module.exports = exportConfig
+

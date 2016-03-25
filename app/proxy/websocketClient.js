@@ -1,4 +1,4 @@
-var config = require("../config");
+var config = require("../../config");
 var serverUrl = "ws://" + config.ip + ':' + config.socket_port;
 var WebSocket = require('ws');
 //var Client = require("socket.io-client");

@@ -1,6 +1,5 @@
 import React from 'react';
 import Websocket  from 'react-websocket';
-import { socketServer } from '../../config'
 import { Table } from 'react-bootstrap'
 
 

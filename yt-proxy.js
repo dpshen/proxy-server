@@ -1,7 +1,7 @@
 require('./app/server/socket');
 require('./app/proxy/proxy');
 
-var config = require("./app/config");
+var config = require("./config");
 var http = require('http');
 var express = require('express');
 var app = express();

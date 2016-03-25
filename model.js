@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var config = require('./app/config');
+var config = require('./config');
 var dbAddr = config.dbAddr;
 
 mongoose.connect(dbAddr);
