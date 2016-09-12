@@ -7,10 +7,7 @@ var config = require("../../config");
 var fileNameIndex = 0;
 var fileType = process.argv.slice(2, process.argv.length);
 
-//var serverUrl = "http://" + config.ip + ':' + config.socket_port;
-//var Client = require("socket.io-client");
-//var socket = new Client(serverUrl);
-var wsClient = require("./websocketClient");
+var ws = require("../server/socket");
 var mock = require("./mock");
 
 fileType = fileType.length ? fileType : [".html"];
@@ -67,7 +64,7 @@ proxy.on("http-error", function (cid, error, request, response) {
 });
 
 proxy.on("http-intercept-request", function (cid, request, response, remoteRequest, performRequest) {
-    //console.log(("Proxy: "+ cid +' '+ request.url).green);
+    // console.log(("Proxy: "+ cid +' '+ request.url).green);
     var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || request.connection.socket.remoteAddress;
     mock.needMock(ip,request.url,function (flag){
         if(flag){
@@ -80,7 +77,19 @@ proxy.on("http-intercept-request", function (cid, request, response, remoteReque
 
 proxy.on("http-intercept-response", function (cid, request, response, remoteResponse, remoteResponseBody, performResponse) {
 
-    wsClient.emit(request, remoteResponse, remoteResponseBody, cid);
+    var dataSet = {
+        url: request.url,
+        status: remoteResponse.statusCode,
+        method: request.method,
+        address: cid.substring(0, cid.indexOf(':')),
+        req: request.headers,
+        res: remoteResponse.headers,
+        body: remoteResponseBody
+    };
+
+    ws.broadcast(JSON.stringify(dataSet));
+
+    // wsClient.emit(request, remoteResponse, remoteResponseBody, cid);
 
     performResponse(remoteResponse, remoteResponseBody);
 });

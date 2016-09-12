@@ -4,9 +4,9 @@ var ws = new WebSocketServer({ port: config.socket_port});
 
 ws.on('connection', function(socket){
     console.log(socket._socket.remoteAddress);
-    socket.on('message', function(data){
-        ws.broadcast(data);
-    });
+    // socket.on('message', function(data){
+    //     ws.broadcast(data);
+    // });
     socket.on('disconnect', function(){
         console.log("disconnect:"+socket);
     });
@@ -18,4 +18,4 @@ ws.broadcast = function broadcast(data) {
     });
 };
 
-//module.exports = io;
+module.exports = ws;

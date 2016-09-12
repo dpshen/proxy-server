@@ -1,12 +1,17 @@
 var config = require("../../config");
 var serverUrl = "ws://" + config.ip + ':' + config.socket_port;
 var WebSocket = require('ws');
-//var Client = require("socket.io-client");
-//var socket = new Client(serverUrl);
 var ws = new WebSocket(serverUrl);
 
-ws.on('open', function open() {
-    console.log('connect');
+
+ws.on('connection', function(socket){
+    console.log(socket._socket.remoteAddress);
+    socket.on('message', function(data){
+        console.log(data);
+    });
+    socket.on('disconnect', function(){
+        console.log("disconnect:"+socket);
+    });
 });
 
 var mock = require('./mock');

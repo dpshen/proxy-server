@@ -2,10 +2,9 @@ import './css/bootstrap/css/bootstrap.css'
 import './css/index.css.less'
 
 import React, { Component } from 'react';
-import Websocket  from 'react-websocket';
+import WebSocket  from 'react-websocket';
 import { render } from 'react-dom';
 import { socketServer } from '../../config'
-import { Table } from 'react-bootstrap'
 
 import ReqList from './components/ReqList';
 import ReqDetail from './components/ReqDetail';
@@ -130,7 +129,7 @@ var Container = React.createClass({
                             <ReqDetail detail={this.state.detail}/>
                         </div>
                     </div>
-                    <Websocket url={socketServer} onMessage={this.onWebSocket} debug={debug}/>
+                    <WebSocket url={socketServer} onMessage={this.onWebSocket} debug={debug}/>
                 </div>
             )
         }
