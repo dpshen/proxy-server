@@ -1,17 +1,25 @@
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
-.left-list {
+.req-list {
   float: left;
   width: 470px;
   overflow: auto;
   height: 700px;
   border: 1px solid #ddd;
+
+  .req-row{
+    width: 360px;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
-.right-detail {
+.req-detail {
   margin: 0 0 15px 480px;
   height: 700px;
   overflow: auto;
@@ -19,17 +27,17 @@
   background-color: #f6f6f6;
 }
 
-.box{
-  word-break:break-all;
+.box {
+  word-break: break-all;
   padding: 10px;
   border: 1px solid #ddd;
 }
 
-.cookie{
+.p-l-50{
   padding-left: 50px;
 }
 
-.toolbar{
+.toolbar {
   height: 30px;
-  margin: 10px 0 ;
+  margin: 10px 0;
 }

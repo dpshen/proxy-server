@@ -1,8 +1,8 @@
 import React from 'react';
 
-var ReqDetail = React.createClass({
+export default class ReqDetail extends React.Component {
 
-    expandHeader(header){
+    expandHeader(header) {
         let jsxHeaders = [];
         var Cookies = [];
         var cookieList;
@@ -13,7 +13,7 @@ var ReqDetail = React.createClass({
                 cookieList = header[key];
             }
 
-            if (key == "cookie" || key == "set-cookie"){
+            if (key == "cookie" || key == "set-cookie") {
                 cookieList.map(function (item) {
                     Cookies.push(<div className="cookie">{item + ';'}</div>)
                 });
@@ -23,14 +23,15 @@ var ReqDetail = React.createClass({
             }
         }
         return jsxHeaders;
-    },
+    }
+
     render() {
         var detail = this.props.detail;
 
         var req = this.expandHeader(detail.req);
         var res = this.expandHeader(detail.res);
 
-        if (this.props.detail.url == ''){
+        if (this.props.detail.url == '') {
             return (<div></div>)
         }
 
@@ -45,16 +46,14 @@ var ReqDetail = React.createClass({
                 </div>
                 <h4>Request Header</h4>
                 <div className="box">
-                        {req}
+                    {req}
                 </div>
                 <h4>Response Header</h4>
                 <div className="box">
-                        {res}
+                    {res}
                 </div>
             </div>
         )
     }
-});
+}
 
-exports['default'] = ReqDetail;
-module.exports = exports['default'];

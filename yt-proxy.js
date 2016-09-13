@@ -1,4 +1,4 @@
-require('./app/server/socket');
+require('./app/proxy/socket');
 require('./app/proxy/proxy');
 
 var config = require("./config");
@@ -22,7 +22,7 @@ if (process.argv[2] != 'dev') {
     /* 开发环境使用express做UI服务 */
     var path = require('path');
     var webpack = require('webpack');
-    var devConfig = require('./reactUI/webpack.config.dev');
+    var devConfig = require('./view/webpack.config.dev');
 
     //var routes = require('./reactUI/routes/index');
 

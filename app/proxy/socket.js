@@ -3,7 +3,7 @@ var config = require('../../config');
 var ws = new WebSocketServer({ port: config.socket_port});
 
 ws.on('connection', function(socket){
-    console.log(socket._socket.remoteAddress);
+    console.log(`IP: ${socket._socket.remoteAddress} join`.blue);
     // socket.on('message', function(data){
     //     ws.broadcast(data);
     // });

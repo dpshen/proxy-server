@@ -2,36 +2,15 @@
 
 var colors = require("colors");
 var proxy = require("http-proxy-simple");
-//var fs = require("fs");
 var config = require("../../config");
-var fileNameIndex = 0;
-var fileType = process.argv.slice(2, process.argv.length);
 
-var ws = require("../server/socket");
+var ws = require("./socket");
 var mock = require("./mock");
-
-fileType = fileType.length ? fileType : [".html"];
-
 
 //代理所使用的端口号
 var PORT = config.proxy_port;
 //本机ip
 var IP = config.ip;
-
-
-function proxyFileType(url) {
-    for (var i = 0; i < fileType.length; i++) {
-        if (url.indexOf(fileType[i]) != -1) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function formateJSON(json) {
-    return JSON.stringify(json, "", 4);//.replace("{","").replace("}","");
-}
-
 
 proxy = proxy.createProxyServer({
     host: IP,
@@ -89,33 +68,6 @@ proxy.on("http-intercept-response", function (cid, request, response, remoteResp
 
     ws.broadcast(JSON.stringify(dataSet));
 
-    // wsClient.emit(request, remoteResponse, remoteResponseBody, cid);
-
     performResponse(remoteResponse, remoteResponseBody);
 });
-
-
-function printXHR(request, response, remoteResponseBody) {
-
-    var fileName = ++fileNameIndex + ".md";
-    var saveFileName = "./data/" + fileName;
-    var fileInfo = "\nxhr ==> " + saveFileName;
-    var general = "General: ==> \n" + formateJSON({
-            "Request URL": request.url,
-            "Request Method": request.method,
-            "Status Code": response.statusCode,
-            "Remote Address": request.address
-        });
-
-    var requestHeader = "Request headers: ==> \n" + formateJSON(request.headers);
-    var responseHeader = "Response headers: ==> \n" + formateJSON(response.headers);
-
-    var resBody = "Response body ==> \n\n" + (remoteResponseBody.toString());
-    //console.log( [fileInfo, general,requestHeader,responseHeader].join("\n\n") )
-    fs.writeFileSync(saveFileName, [general, requestHeader, responseHeader, resBody].join("\n\n"));
-
-}
-
-
-
 

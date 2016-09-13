@@ -1,20 +1,17 @@
 import React from 'react';
-import { Table } from 'react-bootstrap'
+import {Table} from 'react-bootstrap'
 
 
-var ReqList = React.createClass({
+export default class ReqList extends React.Component {
 
-    render() {
-        var tdStyle = {
-            width: '360px',
-            cursor: 'pointer',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis'
-        };
+    constructor(props) {
+        super(props);
+    }
 
-        var reqList = this.props.list.map((row, index) => {
-            if (this.props.siftIP == 'ALL' || this.props.siftIP == row.address) {
+    getReqList() {
+        var reqList = [];
+        this.props.list.map((row, index) => {
+            if (typeof row == "object" && this.props.siftIP == 'ALL' || this.props.siftIP == row.address) {
                 var resType = row.res['content-type'] || '其他';
                 var resTypeLabel = "label";
                 if (resType.indexOf('text') > -1) {
@@ -32,16 +29,22 @@ var ReqList = React.createClass({
                 } else {
                     resTypeLabel = "label label-info";
                 }
-                return <tr key={index} id={"tr_"+index} onClick={this.props.clickEvent.bind(null, index)}>
+                reqList.push(<tr key={index} id={"tr_" + index} onClick={this.props.clickEvent.bind(null, index)}>
                     <td >
-                        <div style={tdStyle} title={row.url}>{row.url}</div>
+                        <div className="req-row" title={row.url}>{row.url}</div>
                     </td>
                     <td>
                         <span className={resTypeLabel}>{resType}</span>
                     </td>
-                </tr>;
+                </tr>);
             }
         });
+        return reqList;
+    }
+
+    render() {
+
+        var reqList = this.getReqList();
 
         return (
             <Table striped condensed hover>
@@ -51,7 +54,5 @@ var ReqList = React.createClass({
             </Table>
         )
     }
-});
+}
 
-exports['default'] = ReqList;
-module.exports = exports['default'];

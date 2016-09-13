@@ -5,4 +5,4 @@ node_modules/
 log/
 .DS_Store
 npm-debug.log
-reactUI/dev
+view/dev
