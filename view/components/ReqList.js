@@ -29,12 +29,14 @@ export default class ReqList extends React.Component {
                 } else {
                     resTypeLabel = "label label-info";
                 }
+
+                let url = row.url.split("?")[0];
                 reqList.push(<tr key={index} id={"tr_" + index} onClick={this.props.clickEvent.bind(null, index)}>
                     <td >
-                        <div className="req-row" title={row.url}>{row.url}</div>
-                    </td>
-                    <td>
                         <span className={resTypeLabel}>{resType}</span>
+                    </td>
+                    <td >
+                        <div className="req-row" title={url}>{url}</div>
                     </td>
                 </tr>);
             }

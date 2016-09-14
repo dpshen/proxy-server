@@ -54,7 +54,10 @@ class Container extends React.Component {
         }
         document.getElementById('tr_' + index).className = 'info';
         // detail 模块置顶
-        document.getElementById('detailDiv').scrollTop = 0;
+        let detailDiv = document.getElementById('detailDiv');
+        if (detailDiv) {
+            document.getElementById('detailDiv').scrollTop = 0;
+        }
 
         this.setState({
             detailIndex: index,
@@ -77,19 +80,17 @@ class Container extends React.Component {
 
     handleResize() {
         var height = window.innerHeight - 60;
-        document.getElementById('listDiv').style.height = height;
-        document.getElementById('detailDiv').style.height = height;
         this.setState({
             windowHeight: {height: height}
         })
     }
 
     componentDidMount() {
-        window.addEventListener('onresize', this.handleResize);
+        window.addEventListener('resize', this.handleResize.bind(this));
     }
 
     componentWillUnmount() {
-        window.removeEventListener('onresize', this.handleResize);
+        window.removeEventListener('resize', this.handleResize.bind(this));
     }
 
     componentDidUpdate() {
@@ -106,34 +107,60 @@ class Container extends React.Component {
         }
     }
 
+    removeDetail() {
+        this.setState({
+            detailIndex: -1
+        })
+    }
+
     render() {
         var debug = false;
 
+        let {scroll, list, IPList, siftIP, detailIndex, detail, windowHeight} = this.state;
+        let setScroll = this.setScroll.bind(this);
+        let setSiftIP = this.setSiftIP.bind(this);
+        let removeDetail = this.removeDetail.bind(this);
+
         var toolBarParam = {
-            scroll: this.state.scroll,
-            IPList: this.state.IPList,
-            siftIP: this.state.siftIP,
-            setScroll: this.setScroll.bind(this),
-            setSiftIP: this.setSiftIP.bind(this)
+            scroll,
+            IPList,
+            siftIP,
+            setScroll,
+            setSiftIP
         };
 
         var reqListParam = {
-            list: this.state.list,
+            list,
+            siftIP,
             clickEvent: this.showDetail.bind(this),
-            siftIP: this.state.siftIP
         };
+        let detailBlock = null;
+        let detailBlockClose = null;
+        let listClass = "req-list full-list";
+        if (detailIndex >= 0) {
+            detailBlock = (
+                <div id="detailDiv" className="req-detail" style={windowHeight}>
+                    <ReqDetail detail={detail}/>
+                </div>
+            );
+            detailBlockClose = (
+                <div className="req-detail-close" onClick={removeDetail}>
+                    <span className="glyphicon glyphicon-remove"/>
+                </div>
+            );
+            listClass = "req-list left-list";
+        }
         return (
             <div className="page">
-                <div className="toolbar">
+                <div className="toolbar p-lr-10">
                     <ToolBar {...toolBarParam}/>
                 </div>
-                <div className="main-container">
-                    <div id="listDiv" className="req-list" style={this.state.windowHeight}>
+                <div className="main-container p-lr-10">
+                    <div id="listDiv" className={listClass} style={windowHeight}>
                         <ReqList {...reqListParam} />
                     </div>
-                    <div id="detailDiv" className="req-detail" style={this.state.windowHeight}>
-                        <ReqDetail detail={this.state.detail}/>
-                    </div>
+                    {detailBlock}
+                    {detailBlockClose}
                 </div>
                 <WebSocket url={socketServer} onMessage={this.onWebSocket.bind(this)} debug={debug}/>
             </div>
