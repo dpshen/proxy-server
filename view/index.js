@@ -17,6 +17,7 @@ class Container extends React.Component {
         this.state = {
             scroll: true,
             siftIP: 'ALL',
+            filter: null,
             IPList: [],
             list: [],
             windowHeight: {
@@ -73,9 +74,17 @@ class Container extends React.Component {
     }
 
     setSiftIP(IP) {
+        console.log(IP)
         this.setState({
             siftIP: IP
         })
+    }
+
+    clearList(){
+        this.setState({
+            list: [],
+            IPList: []
+        });
     }
 
     handleResize() {
@@ -113,23 +122,33 @@ class Container extends React.Component {
         })
     }
 
+    changeFilter(e){
+        this.setState({
+            filter:e.target.value
+        })
+    }
+
     render() {
         var debug = false;
 
-        let {scroll, list, IPList, siftIP, detailIndex, detail, windowHeight} = this.state;
+        let {scroll, list, IPList, siftIP,filter, detailIndex, detail, windowHeight} = this.state;
         let setScroll = this.setScroll.bind(this);
         let setSiftIP = this.setSiftIP.bind(this);
         let removeDetail = this.removeDetail.bind(this);
+        let clearList = this.clearList.bind(this);
 
         var toolBarParam = {
             scroll,
             IPList,
             siftIP,
             setScroll,
-            setSiftIP
+            setSiftIP,
+            clearList,
+            changeFilter: this.changeFilter.bind(this)
         };
 
         var reqListParam = {
+            filter,
             list,
             siftIP,
             clickEvent: this.showDetail.bind(this),

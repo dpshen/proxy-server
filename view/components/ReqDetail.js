@@ -2,6 +2,13 @@ import React from 'react';
 
 export default class ReqDetail extends React.Component {
 
+    constructor(props){
+        super(props);
+        this.state = {
+            viewSource: false
+        }
+    }
+
     expandHeader(header) {
         let jsxHeaders = [];
         var Cookies = [];
@@ -15,7 +22,7 @@ export default class ReqDetail extends React.Component {
 
             if (key == "cookie" || key == "set-cookie") {
                 cookieList.map(function (item) {
-                    Cookies.push(<div className="cookie">{item + ';'}</div>)
+                    Cookies.push(<div className="p-l-50">{item + ';'}</div>)
                 });
                 jsxHeaders.push(<div><b>{key}: </b>{Cookies}</div>);
             } else {
@@ -39,44 +46,36 @@ export default class ReqDetail extends React.Component {
         return result;
     }
 
+    jsonp(json) {
+        return JSON.stringify(json, undefined, 4);
+
+    }
+
     syntaxHighlight(json) {
         let callback = null;
-        if (typeof json != 'string') {
-            json = JSON.stringify(json, undefined, 2);
-        } else {
-            callback = json.match(/([^\{]*)/);
-            if (callback && callback.length == 2){
-                callback = callback[1]
-            }
-        }
-        try{
-            json = JSON.stringify(JSON.parse(json),undefined, 2);
-            console.log(json)
-        } catch (e){
-            console.log(e)
-        }
-        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-        let spanList = [];
-        json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-            var cls = 'number';
-            if (/^"/.test(match)) {
-                if (/:$/.test(match)) {
-                    cls = 'key';
-                    spanList.push( <span className={cls}>{match} </span>)
-                    return null
+        try {
+            if (typeof json != 'string') {
+                json = this.jsonp(json)
+            } else {
+                callback = json.match(/[^\(]*/);
+                json = json.replace(/[^\(]*/, m => "this.jsonp");
+                if (callback && json.startsWith("this.jsonp(")) {
+                    json = `${callback}(${eval(json)})`
                 } else {
-                    cls = 'string';
+                    json = "解析失败"
                 }
-            } else if (/true|false/.test(match)) {
-                cls = 'boolean';
-            } else if (/null/.test(match)) {
-                cls = 'null';
             }
-            console.log(match, typeof match)
-            spanList.push( <span className={cls}>{match} </span>)
-        });
-        console.log(spanList)
-        return spanList;
+        }catch (e){
+
+        }
+        return json
+    }
+
+    viewSource(e){
+        console.log(e.target.checked)
+        this.setState({
+            viewSource:e.target.checked
+        })
     }
 
     render() {
@@ -87,9 +86,9 @@ export default class ReqDetail extends React.Component {
         }
         // console.log(detail.url.substring(detail.url.indexOf("?")))
         let paramList = [];
-        if (detail.url.includes("?")){
+        if (detail.url.includes("?")) {
             let params = this.parseQueryString(detail.url.substr(detail.url.indexOf("?")));
-            Object.keys(params).map(key=>{
+            Object.keys(params).map(key=> {
                 paramList.push(<p className="p-l-50" key={key}><b>{key}</b>:{params[key]}</p>)
             })
         }
@@ -100,6 +99,9 @@ export default class ReqDetail extends React.Component {
         if (detail.url == '') {
             return (<div></div>)
         }
+
+        var changeViewSource = this.viewSource.bind(this);
+        var viewSource = this.state.viewSource;
 
         return (
             <div >
@@ -120,8 +122,11 @@ export default class ReqDetail extends React.Component {
                     {res}
                 </div>
                 <h4>Response Body</h4>
+                <label>
+                    <input type="checkbox" defaultChecked={false} onChange={changeViewSource} /><span> view source</span>
+                </label>
                 <pre className="box">
-                    {this.syntaxHighlight(body.toString())}
+                    {viewSource?body.toString():this.syntaxHighlight(body.toString())}
                 </pre>
             </div>
         )
