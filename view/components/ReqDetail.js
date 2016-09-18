@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class ReqDetail extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             viewSource: false
@@ -48,7 +48,6 @@ export default class ReqDetail extends React.Component {
 
     jsonp(json) {
         return JSON.stringify(json, undefined, 4);
-
     }
 
     syntaxHighlight(json) {
@@ -58,23 +57,22 @@ export default class ReqDetail extends React.Component {
                 json = this.jsonp(json)
             } else {
                 callback = json.match(/[^\(]*/);
-                json = json.replace(/[^\(]*/, m => "this.jsonp");
-                if (callback && json.startsWith("this.jsonp(")) {
-                    json = `${callback}(${eval(json)})`
+                let jsonp = json.replace(/[^\(]*/, m => "this.jsonp");
+                if (callback && jsonp.startsWith("this.jsonp(")) {
+                    json = `${callback}(${eval(jsonp)})`
                 } else {
                     json = "解析失败"
                 }
             }
-        }catch (e){
-
+        } catch (e) {
+            console.log(e)
         }
         return json
     }
 
-    viewSource(e){
-        console.log(e.target.checked)
+    viewSource(e) {
         this.setState({
-            viewSource:e.target.checked
+            viewSource: e.target.checked
         })
     }
 
@@ -84,7 +82,6 @@ export default class ReqDetail extends React.Component {
         if (body.type == "Buffer") {
             body = new Buffer(detail.body.data)
         }
-        // console.log(detail.url.substring(detail.url.indexOf("?")))
         let paramList = [];
         if (detail.url.includes("?")) {
             let params = this.parseQueryString(detail.url.substr(detail.url.indexOf("?")));
@@ -123,10 +120,10 @@ export default class ReqDetail extends React.Component {
                 </div>
                 <h4>Response Body</h4>
                 <label>
-                    <input type="checkbox" defaultChecked={false} onChange={changeViewSource} /><span> view source</span>
+                    <input type="checkbox" defaultChecked={false} onChange={changeViewSource}/><span> view source</span>
                 </label>
                 <pre className="box">
-                    {viewSource?body.toString():this.syntaxHighlight(body.toString())}
+                    {viewSource ? body.toString() : this.syntaxHighlight(body.toString())}
                 </pre>
             </div>
         )

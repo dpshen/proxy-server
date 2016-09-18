@@ -31,7 +31,7 @@ var exportConfig = {
     proxy_port,
     socket_port,
     static_port,
-    dbAddr: 'mongodb://localhost/proxy',
+    // dbAddr: 'mongodb://localhost/proxy',
     socketServer: `ws://127.0.0.1:${socket_port}`
     //socketServer: 'ws://112.124.118.39:9001'
 };

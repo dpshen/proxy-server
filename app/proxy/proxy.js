@@ -5,7 +5,7 @@ var proxy = require("http-proxy-simple");
 var config = require("../../config");
 
 var ws = require("./socket");
-var mock = require("./mock");
+// var mock = require("./mock");
 
 //代理所使用的端口号
 var PORT = config.proxy_port;
@@ -44,14 +44,15 @@ proxy.on("http-error", function (cid, error, request, response) {
 
 proxy.on("http-intercept-request", function (cid, request, response, remoteRequest, performRequest) {
     // console.log(("Proxy: "+ cid +' '+ request.url).green);
-    var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || request.connection.socket.remoteAddress;
-    mock.needMock(ip,request.url,function (flag){
-        if(flag){
-            mock.mockReq(ip,request.url,response,remoteRequest,performRequest);
-        } else {
-            performRequest(remoteRequest);
-        }
-    });
+    // var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress || request.socket.remoteAddress || request.connection.socket.remoteAddress;
+    // mock.needMock(ip,request.url,function (flag){
+    //     if(flag){
+    //         mock.mockReq(ip,request.url,response,remoteRequest,performRequest);
+    //     } else {
+    //          performRequest(remoteRequest);
+    //     }
+    // });
+    performRequest(remoteRequest);
 });
 
 proxy.on("http-intercept-response", function (cid, request, response, remoteResponse, remoteResponseBody, performResponse) {

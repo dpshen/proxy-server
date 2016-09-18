@@ -6,3 +6,5 @@ log/
 .DS_Store
 npm-debug.log
 view/dev
+config.js
+

@@ -74,7 +74,6 @@ class Container extends React.Component {
     }
 
     setSiftIP(IP) {
-        console.log(IP)
         this.setState({
             siftIP: IP
         })
@@ -111,7 +110,6 @@ class Container extends React.Component {
         // 判断是否已调整页面高度
         var height = window.innerHeight - 60;
         if (height != this.state.windowHeight.height) {
-            console.log('todo handleResize');
             this.handleResize()
         }
     }
