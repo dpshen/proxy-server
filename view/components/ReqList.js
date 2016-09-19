@@ -12,7 +12,7 @@ export default class ReqList extends React.Component {
         var reqList = [];
         var filter = this.props.filter;
         this.props.list.map((row, index) => {
-            if (filter && !row.url.includes(filter)){
+            if (filter && !row.url.includes(filter.trim())){
                 return null
             }
             if (typeof row == "object" && this.props.siftIP == 'ALL' || this.props.siftIP == row.address) {
