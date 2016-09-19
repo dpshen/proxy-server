@@ -12,6 +12,7 @@ export default class ReqList extends React.Component {
         var reqList = [];
         var filter = this.props.filter;
         this.props.list.map((row, index) => {
+            console.log(filter, row.url);
             if (filter && !row.url.includes(filter.trim())){
                 return null
             }
