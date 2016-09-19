@@ -1,7 +1,6 @@
 import React from 'react';
 
 var reactBootStrap = require('react-bootstrap');
-console.log(reactBootStrap)
 const {
     Nav,
     Navbar,
