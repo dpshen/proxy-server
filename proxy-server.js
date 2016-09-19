@@ -50,19 +50,17 @@ if (process.argv.length > 2 && process.argv[2] == 'dev'){
     });
 
     server.listen(port);
-    console.log(`Open http://fbi.yuantutech.com:${port}`)
+    console.log(`Dev View: http://fbi.yuantutech.com:${port}`)
 
 } else {
     var app = express();
-
-    console.log(config.static_port)
     app.listen(config.static_port);
     app.use(function (req, res, next) {
         console.log('Time:', Date.now(), 'Request URL:', req.originalUrl);
         next();
-    })
+    });
     app.use("/", express.static('build', {fallthrough:true}));
-    console.log(`Open http://fbi.yuantutech.com:${port}`)
+    console.log(`View http://fbi.yuantutech.com:${port}`)
 
 }
 
